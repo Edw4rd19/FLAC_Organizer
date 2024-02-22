@@ -40,7 +40,6 @@ def read_audio_file(audio_dir):
 
     try:
         artist = str(audio["albumartist"]).strip("'[]")
-        print("aa ok")
     except:
         try:
             artist = str(audio["artist"]).strip("'[]")
@@ -70,8 +69,6 @@ def read_audio_file(audio_dir):
         else:
             destination = destination_folder + "\\" + folder_name
 
-
-
         print("Artist: " + artist)
         print("Album: " + album + "   Year: " + year + "   Disc number: " + disc_number + "/" + disc_total)
         print("Bitrate: " + str(bits) + "   Sample rate[Hz]" + str(srate))
@@ -80,7 +77,7 @@ def read_audio_file(audio_dir):
         print("---------------------------------------------------------------------------")
     except:
         None
-    if artist.startswith('A') or artist.startswith('3'): destination = ''
+    #if artist.startswith('A') or artist.startswith('3'): destination = ''
     return destination
 
 
@@ -90,11 +87,12 @@ def copy_files(source, destination):
             print("Creating directory - " + destination)
             os.makedirs(destination)
             print("Directory created")
-
         shutil.copytree(source, destination, dirs_exist_ok=True)
-        print("Files copied from " + source + " to " + destination)
+        print(Fore.GREEN + "Files copied from " + source + " to " + destination + Style.RESET_ALL)
+        print("---------------------------------------------------------------------------")
     except:
-        None
+        print(Fore.RED + "Error copying " + source + " to " + destination + Style.RESET_ALL)
+        print("---------------------------------------------------------------------------")
 
 
 for path, dirlist, files in os.walk(source_folder):
@@ -105,7 +103,7 @@ for path, dirlist, files in os.walk(source_folder):
             if destination_path != '':
                 with open("errors.txt", "a") as log:
                     try:
-                        #copy_files(path, destination_path)
+                        copy_files(path, destination_path)
                         # Below line will print any print to log file as well.
                         print("File read to copy: " + file + "\n Fr: " + path + "\n To: " + destination_path, file=log)
                     except Exception:
